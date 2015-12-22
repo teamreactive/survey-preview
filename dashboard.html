@@ -1,0 +1,225 @@
+<!-- dashboard.html -->
+<style>
+	.form {
+		width: 90%;
+		margin: 8% auto;
+	}
+
+	.formpreview {
+		height: 200px;
+		border: 2px solid #428BCA;
+	}
+
+	.formpreview:active,
+	.formpreview:hover {
+		cursor: pointer;
+		border: 2px solid #2169A8;
+	}
+
+	.formdelete {
+		position: absolute;
+		top: 12%;
+		right: 12%;
+	}
+
+	.formtitle {
+		text-align: center;
+		word-break: break-all;
+	}
+
+	.formcreate {
+		position: fixed;
+		bottom: 4%;
+		right: 2.3%;
+	}
+
+	.formdialog {
+		z-index: 2000;
+		position: fixed;
+		background: #FFF;
+		top: 25%;
+		box-shadow: 0px 1px 5px #333;
+	}
+
+	.formdialog input {
+		padding: 10px;
+		width: 100%;
+		font-size: 1.1em;
+		margin: 4.5% auto 1.3% auto;
+	}
+
+	.formdialog button {
+		float: right;
+		padding: 13px 37px;
+		margin-left: 10px;
+		margin-bottom: 15px;
+		background: #FFF;
+		border: 1px solid #CCC;
+	}
+
+	.formdialog button:hover {
+		background: #CCC;
+	}
+
+	.formdialog .innerdialog {
+		padding: 15px;
+	}
+
+	.hidden {
+		display: none;
+	}
+
+	#noformsmessage {
+		text-align: center;
+		color: #CCC;
+		margin-top: 17%;
+	}
+
+	#msgformdialog {
+		margin-left: 5px;
+		margin-bottom: 2.5%;
+		color: red;
+		font-weight: bold;
+	}
+</style>
+<div class="container">
+	<h2>Mis formularios</h2>
+	<div id="forms">
+		<!-- Every form will be here -->
+	</div>
+</div>
+<!-- Create form button -->
+<div class="formcreate">
+	<a id="formcreatebutton" href="javascript:void(0)">
+		<i class="fa fa-5x fa-plus-circle"></i>
+	</a>
+</div>
+<!-- Create/Edit form dialog -->
+<div id="formdialog" class="formdialog col-md-6 col-md-offset-3 hidden">
+	<div class="innerdialog">
+		<h2 id="titleformdialog"></h2>
+		<form>
+			<input id="nameformdialog" type="text" placeholder="Nombre (m&aacute;ximo 24 caracteres)" maxlength="24" required>
+			<p id="msgformdialog" class="hidden">El nombre ingresado es invalido</p>
+			<div class="dialogbuttons">
+				<button id="saveformdialogbutton" type="button">Guardar</button>
+				<button id="cancelformdialogbutton" type="button">Canceral</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	$(document).ready(function () {
+		/* Load form as HTML */
+		function loadForms() {
+			var formscontainer = $('#forms');
+			formscontainer.html('');
+			if (forms.length > 0) {
+				var formsHTML = '';
+				for (var i = forms.length-1; i >= 0; i--) {
+					formsHTML += '\
+						<div class="col-md-4">\
+							<div id="{{ id }}" class="form">\
+								<div class="formpreview">\
+									<a href="javascript:void(0)" class="formdelete">\
+										<i class="fa fa-2x fa-times"></i>\
+									</a>\
+								</div>\
+								<h4 class="formtitle">\
+									<a href="javascript:void(0)">{{ title }}</a>\
+								</h4>\
+							</div>\
+						</div>\
+					'.replace('{{ id }}', 'form-' + i)
+					.replace('{{ title }}', forms[i]['title']);
+				}
+				formscontainer.html(formsHTML);
+				$('.formpreview').on('click', showForm);
+				$('.formdelete').on('click', deleteForm);
+				$('.formtitle').on('click', editForm);
+			} else {
+				formscontainer.html('<h3 id="noformsmessage">No hay formularios aun</h3>');
+			}
+		}
+		loadForms();
+		/* Create new form */
+		var formdialog = $('#formdialog');
+		$('#formcreatebutton').on('click', showDialog);
+		$('#cancelformdialogbutton').on('click', hideDialog);
+		$('#saveformdialogbutton').on('click', saveForm);
+
+		var titleformdialog = $('#titleformdialog');
+		var nameformdialog = $('#nameformdialog');
+		var msgformdialog = $('#msgformdialog');
+		function clearInput() {
+			nameformdialog.val('');
+			if (!msgformdialog.hasClass('hidden')) {
+				msgformdialog.addClass('hidden');
+			}
+		}
+
+		function showDialog() {
+			clearInput();
+			if (formdialog.hasClass('hidden')) {
+				titleformdialog.html('Crear formulario');
+				formdialog.removeClass('hidden');
+			}
+		}
+		
+		function hideDialog() {
+			clearInput();
+			if (!formdialog.hasClass('hidden')) {
+				formdialog.addClass('hidden');
+			}
+		}
+		
+		var modifyIndex = -1;
+		function saveForm() {
+			var name = nameformdialog.val();
+			if (name.length > 0) {
+				if (modifyIndex >= 0 && modifyIndex < forms.length) {
+					forms[modifyIndex]['title'] = name;
+					modifyIndex = -1;
+				} else {
+					forms.push({
+						'title': name
+					});
+				}
+				clearInput();
+				loadForms();
+				hideDialog();
+			} else {
+				if (msgformdialog.hasClass('hidden')) {
+					msgformdialog.removeClass('hidden');
+				}
+			}
+		}
+
+		function showForm(e) {
+			var index = $(e.target).parent().attr('id').split('-')[1];
+			if (index >= 0 && index < forms.length) {
+				main.load('form.html', function () {
+					$('#formtitle').html(forms[index]['title']);
+				});
+			}
+		}
+
+		function deleteForm(e) {
+			var index = $(e.target).parent().parent().parent().attr('id').split('-')[1];
+			if (index >= 0 && index < forms.length) {
+				forms.splice(index, 1);
+				loadForms();
+			}
+		}
+
+		function editForm(e) {
+			var index = $(e.target).parent().parent().attr('id').split('-')[1];
+			if (index >= 0 && index <= forms.length) {
+				modifyIndex = index;
+				showDialog();
+				titleformdialog.html('Editar formulario');
+				nameformdialog.val(forms[index]['title']);
+			}
+		}
+	});
+</script>

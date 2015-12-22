@@ -1,0 +1,94 @@
+<!-- form.html -->
+<style>
+	.container {
+		width: 65%;
+	}
+
+	#formbody {
+		margin: 42px auto;
+		height: 1200px;
+		border: 1px solid #DDD;
+	}
+
+	.leftmenu {
+		z-index: 100;
+		margin-top: 10px;
+		left: 10px;
+		position: fixed;
+	}
+
+	.leftmenu ul {
+		background: #FFF;
+		width: 100%;
+		border: 1px solid #DDD;
+		margin-top: 90px;
+		padding: 0;
+	}
+
+	.leftmenu ul li {
+		width: 100%;
+		list-style: none;
+		padding: 20px;
+		cursor: pointer;
+	}
+
+	.leftmenu ul li:hover {
+		background: #EEE;
+	}
+
+	.leftmenu ul a {
+		width: 100%;
+	}
+
+	.leftmenu ul a:hover {
+		text-decoration: none;
+		background: #EEE;
+	}
+
+	.selected {
+		background: #EEE;
+	}
+</style>
+<!-- Left menu -->
+<div class="leftmenu col-md-2">
+	<!-- Back button -->
+	<div class="formback col-md-1">
+		<a id="formbackbutton" href="javascript:void(0)">
+			<i class="fa fa-5x fa-arrow-circle-left"></i>
+		</a>
+	</div>
+	<ul>
+		<li class="lmchoice selected">Vista previa</li>
+		<li class="lmchoice">Editar</li>
+		<li class="lmchoice">Compartir</li>
+		<li class="lmchoice">Estadisticas</li>
+	</ul>
+</div>
+<div class="container">	
+	<h1 id="formtitle">{{ title }}</h1>
+	<div id="formbody">
+
+	</div>
+</div>
+<script>
+	$(document).ready(function () {
+		var choices = $('.lmchoice');		
+
+		$('#formbackbutton').on('click', dashboard);
+		choices.on('click', selectChoice);
+
+		function dashboard(e) {
+			main.load('dashboard.html');
+		}
+
+		function selectChoice(e) {
+			var target = $(e.target);
+			if (!target.hasClass('selected')) {
+				if (choices.hasClass('selected')) {
+					choices.removeClass('selected');
+				}
+				target.addClass('selected');
+			}
+		}
+	});
+</script>
