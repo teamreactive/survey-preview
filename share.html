@@ -1,0 +1,22 @@
+<!-- share.html -->
+<div class="question" id="shareurl">
+	<h3>Enlace URL</h3>
+	<input type="text" value="{{ url }}" disabled>
+</div>
+
+<div class="question" id="shareembed">
+	<h3>Insertar en pagina web</h3>
+	<textarea rows="5" disabled>{{ embed }}</textarea>
+</div>
+
+<script>
+	$(document).ready(function () {
+		var formURL = 'https://www.google.com';
+		/* Load URL for the form */
+		$('#shareurl input').attr('value', formURL);
+		/* Load Embed code for the form */
+		var code = '<iframe src="{{ url }}"></iframe>'
+					.replace('{{ url }}', formURL);
+		$('#shareembed textarea').html(code);
+	});
+</script>
