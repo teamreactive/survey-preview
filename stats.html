@@ -1,1 +1,83 @@
-stats.html
+<!-- stats.html -->
+<div id="stats-container">
+	<h2>Estadisticas</h2>
+	<div id='stats-body'>
+		<ul id="question-options">
+		</ul>
+	</div>
+	<div id="sample-bar-container" class="hidden">
+		<h3 id="stats-title"></h3>
+		<div  id='sample-bar'>
+		</div>
+		<div class="clearfix"></div>
+		<ul id="help-labels">
+		</ul>
+	</div>
+	
+</div>
+
+<script>
+	$(document).ready(function(){
+		colors = [
+				"LimeGreen",
+				"MediumSeaGreen",
+				"Turquoise",
+				"RoyalBlue",
+				"SteelBlue",
+				"DarkSlateBlue",
+				"MediumTurquoise",
+				"Indigo ",
+				"DarkOliveGreen ",
+				];
+		function loadQuestionOptions(){
+			var list = $('#question-options');
+			for (var i = 0; i < form['questions'].length; i++) {
+				var question = form['questions'][i];
+				if (question['type'] == 'multchoice') {
+					var li = $('<li>');
+					li.addClass('form-stats-choice');
+					li.html(question['title']);
+					li.attr("id","ans-"+i)
+					list.append(li);
+				}
+			}
+		}
+		function loadBarGraphics(question) {
+			var choices = question['choices'];
+			var size = choices.length;
+			var div = $('#sample-bar');
+			var help = $('#help-labels');
+			div.html('');
+			help.html('');
+			for (var i =0; i<size; i++) {
+				var color = colors[i%colors.length];
+				var bar = $('<div>'); bar.addClass('bar');
+				bar.css({
+					"background-color":color,
+					"height":Math.ceil((Math.random()*400)+5)
+				});
+				div.append(bar);
+
+				var li = $('<li>');
+				li.html(choices[i]['name']);
+				li.css({
+					"border-left":"solid 5px "+color,
+					"margin":"5px 0px"
+				});
+				help.append(li);
+			}
+			$(".bar").css("margin","0px "+ 50/(size+1) + "%");
+
+		}
+		loadQuestionOptions();
+		$("body").on('click','.form-stats-choice', function(e) {
+			var target = $(e.target);
+			var ansid = target.attr('id').split("-")[1];
+			var question = form['questions'][ansid];
+			$('#sample-bar-container').removeClass("hidden");
+			$('#stats-title').html(question['title']);
+			loadBarGraphics(question);
+		});
+
+	});
+</script>
