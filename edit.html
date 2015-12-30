@@ -1,0 +1,113 @@
+<!-- preview.html -->
+<!-- Create/Edit form dialog -->
+<div id="formdialog" class="formdialog col-md-6 col-md-offset-1 hidden">
+	<div class="innerdialog">
+		<h2 id="titleformdialog"></h2>
+		<form>
+			<input id="nameformdialog" type="text" placeholder required>
+			<p id="msgformdialog" class="hidden">El nombre ingresado es invalido</p>
+			<div class="dialogbuttons">
+				<button id="saveformdialogbutton" type="button">Guardar</button>
+				<button id="cancelformdialogbutton" type="button">Canceral</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	$(document).ready(function () {
+		formHTML = '';
+		for (var i = 0; i < form['questions'].length; i++) {
+			var q = form['questions'][i];
+			formHTML += '' +
+				'<div class="equestion">' +
+					'<h3>{{ title }}</h3>' + '<span class="remove-question glyphicon glyphicon-remove"></span>' + 
+			'';
+			if (q['type'] === 'shortans') {
+				formHTML += '' +
+					'<input type="text" placeholder="Ingrese su respuesta">' +
+				'';
+			} else if (q['type'] === 'longans') {
+				formHTML += '' +
+					'<textarea rows="8" placeholder="Ingrese su respuesta"></textarea>' +
+				'';
+			} else if (q['type'] === 'multchoice') {
+				for (var j = 0; j < q['choices'].length; j++) {
+					var c = q['choices'][j];
+					formHTML += '' +
+						'<input type="{{ qtype }}" name="{{ qname }}" value="{{ value }}">' +
+						'<label>{{ name }}</label>' +
+						'<br>' +
+					'';
+					/* Replace marks */
+					var qtype = '';
+					if (q['subtype'] === 'singleans') {
+						qtype = 'radio';
+					} else if (q['subtype'] === 'multans') {
+						qtype = 'checkbox';
+					}
+					formHTML = formHTML.replace('{{ qtype }}', qtype);
+					formHTML = formHTML.replace('{{ qname }}', q['name']);
+					formHTML = formHTML.replace('{{ value }}', c['value']);
+					formHTML = formHTML.replace('{{ name }}', c['name']);
+				}
+			}
+			formHTML += '' +
+				'</div>' +
+			'';
+			/* Replace marks */
+			formHTML = formHTML.replace('{{ title }}', q['title']);
+
+		}
+		formbody.append(formHTML);
+
+		// functionallity
+		var formdialog = $('#formdialog');
+		$('#formcreatebutton').on('click', showDialog);
+		$('#cancelformdialogbutton').on('click', hideDialog);
+		$('#saveformdialogbutton').on('click', saveForm);
+
+		var titleformdialog = $('#titleformdialog');
+		var nameformdialog = $('#nameformdialog');
+		var msgformdialog = $('#msgformdialog');
+		var formdialogtarget;
+		var formdialoginput;
+		var formdialogplaceholder;
+		function clearInput() {
+			nameformdialog.val('');
+			if (!msgformdialog.hasClass('hidden')) {
+				msgformdialog.addClass('hidden');
+			}
+		}
+
+		function showDialog() {
+			clearInput();
+			if (formdialog.hasClass('hidden')) {
+				formdialog.removeClass('hidden');
+			}
+			nameformdialog.val(formdialogtarget.html());
+			nameformdialog.attr("palceholder", formdialogplaceholder)
+
+		}
+
+		function hideDialog() {
+			clearInput();
+			if (!formdialog.hasClass('hidden')) {
+				formdialog.addClass('hidden');
+			}
+		}
+		function saveForm() {
+			formdialogtarget.html(nameformdialog.val());
+			hideDialog();
+		}
+
+		$('.equestion h3').on('click',function(e){
+			formdialogtarget = $(e.target);
+			formdialogplaceholder = "Escriba su pregunta";
+			titleformdialog.html('Cambiar Pregunta');
+			showDialog();
+		});
+		$('.remove-question').on('click',function(e){
+			$(e.target).parent().remove();
+		});
+	});
+</script>
