@@ -19,45 +19,56 @@
 		for (var i = 0; i < form['questions'].length; i++) {
 			var q = form['questions'][i];
 			formHTML += '' +
-				'<div class="equestion">' +
-					'<h3>{{ title }}</h3>' + '<span class="remove-question glyphicon glyphicon-remove"></span>' + 
+				'<div class="equestion" customInput="{{ qtype }}" name="{{ qname }}">' +
+					'<h3>{{ title }}</h3> {{ plus-gly }}' + '<span class="remove-question glyphicon glyphicon-remove"></span>' + 
 			'';
 			if (q['type'] === 'shortans') {
+				formHTML = formHTML.replace("{{ plus-gly }}","");
+				formHTML = formHTML.replace('{{ qtype }}', "");
+				formHTML = formHTML.replace('{{ qname }}', "");
 				formHTML += '' +
 					'<input type="text" placeholder="Ingrese su respuesta">' +
 				'';
 			} else if (q['type'] === 'longans') {
+				formHTML = formHTML.replace("{{ plus-gly }}","");
+					formHTML = formHTML.replace('{{ qtype }}', "");
+					formHTML = formHTML.replace('{{ qname }}', "");
+
 				formHTML += '' +
 					'<textarea rows="8" placeholder="Ingrese su respuesta"></textarea>' +
 				'';
 			} else if (q['type'] === 'multchoice') {
+				formHTML = formHTML.replace("{{ plus-gly }}","<span class='glyphicon glyphicon-plus'></span><div class='clearfix'></div>");
+				var qtype = '';
+				if (q['subtype'] === 'singleans') {
+					qtype = 'radio';
+				} else if (q['subtype'] === 'multans') {
+					qtype = 'checkbox';
+				}
+				formHTML = formHTML.replace("{{ qtype }}",qtype);
+				formHTML = formHTML.replace('{{ qname }}', q['name']);
+
 				for (var j = 0; j < q['choices'].length; j++) {
 					var c = q['choices'][j];
 					formHTML += '' +
-						'<input type="{{ qtype }}" name="{{ qname }}" value="{{ value }}">' +
-						'<label>{{ name }}</label>' +
-						'<br>' +
+						'<div class="custom-input-container" style="position:relative"><input  type="{{ qtype }}" name="{{ qname }}" value="{{ value }}">' +
+						'<label class="label-editable">{{ name }}</label><span class="remove-input glyphicon glyphicon-remove"></span><div class="clearfix"></div></div>' +
 					'';
 					/* Replace marks */
-					var qtype = '';
-					if (q['subtype'] === 'singleans') {
-						qtype = 'radio';
-					} else if (q['subtype'] === 'multans') {
-						qtype = 'checkbox';
-					}
 					formHTML = formHTML.replace('{{ qtype }}', qtype);
 					formHTML = formHTML.replace('{{ qname }}', q['name']);
 					formHTML = formHTML.replace('{{ value }}', c['value']);
 					formHTML = formHTML.replace('{{ name }}', c['name']);
 				}
 			}
-			formHTML += '' +
-				'</div>' +
+			formHTML += '' + 
+				'</div>' + 
 			'';
 			/* Replace marks */
 			formHTML = formHTML.replace('{{ title }}', q['title']);
 
 		}
+		formHTML += '<i id="new-question" class="fa fa-5x fa-plus-circle"></i>';
 		formbody.append(formHTML);
 
 		// functionallity
@@ -69,9 +80,12 @@
 		var titleformdialog = $('#titleformdialog');
 		var nameformdialog = $('#nameformdialog');
 		var msgformdialog = $('#msgformdialog');
+		var formdialogparent;
+		var formdialogchild;
 		var formdialogtarget;
 		var formdialoginput;
 		var formdialogplaceholder;
+		var formdialogOption;
 		function clearInput() {
 			nameformdialog.val('');
 			if (!msgformdialog.hasClass('hidden')) {
@@ -98,16 +112,52 @@
 		function saveForm() {
 			formdialogtarget.html(nameformdialog.val());
 			hideDialog();
+			if (formdialogOption == "new") {
+				formdialogparent.append(formdialogchild);
+			}
 		}
 
-		$('.equestion h3').on('click',function(e){
+		$('body').on('click','.equestion h3',function(e){
 			formdialogtarget = $(e.target);
 			formdialogplaceholder = "Escriba su pregunta";
 			titleformdialog.html('Cambiar Pregunta');
 			showDialog();
 		});
-		$('.remove-question').on('click',function(e){
+		$('body').on('click','.label-editable',function(e){
+			formdialogtarget = $(e.target);
+			formdialogplaceholder = "Escriba su Opcion";
+			titleformdialog.html('Cambiar opcion');
+			showDialog();
+		});
+		$('body').on('click','.remove-question',function(e){
 			$(e.target).parent().remove();
+		});
+		$('body').on('click','.remove-input',function(e){
+			$(e.target).parent().remove();
+		});
+		$('body').on('click','.glyphicon-plus',function(e){
+			var div = $(e.target).parent();
+			var type = div.attr("customInput");
+			var name = div.attr("name");
+			var stag = '<div class="custom-input-container" style="position:relative"><input  type="{{ qtype }}" name="{{ qname }}" value="{{ value }}">' +
+						'<label class="label-editable">{{ name }}</label><span class="remove-input glyphicon glyphicon-remove"></span><div class="clearfix"></div>' +
+						'</div>' ;
+			stag = stag.replace('{{ qtype }}',type);
+			stag = stag.replace('{{ qname }}',name);
+			stag = stag.replace('{{ value }}',"");
+			stag = stag.replace('{{ name }}',"");
+			var tag = $(stag);
+			var target = tag.find(".label-editable");
+			formdialogplaceholder = "Escriba su Opcion";
+			formdialogtarget = target;
+			formdialogOption = "new";
+			formdialogparent = div;
+			formdialogchild = tag;
+			titleformdialog.html('Añadir opcion');
+			showDialog();
+		});
+		$('#new-question').on('click', function(e){
+			
 		});
 	});
 </script>

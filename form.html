@@ -5,6 +5,7 @@
 	}
 
 	#formbody {
+		position: relative;
 		margin: 42px auto;
 		border: 1px solid #DDD;
 	}
@@ -82,6 +83,8 @@
 	.equestion h3 {
 		cursor: pointer;
 		margin-bottom: 18px;
+		position: relative;
+		float: left;
 	}
 
 	.equestion input[type="text"],
@@ -100,11 +103,40 @@
 		font-size: 1.1em;
 		margin-left: 8px;
 		font-weight: normal;
+		position: relative;
 	}
-	.equestion  span {
+	.remove-question {
 		position: absolute;
 		top: 20px;
 		right: 20px;
+	}
+	.remove-input {
+		position: relative;
+		float: left;
+		top: 4px;
+		right: -3px;
+		font-size: 10px;
+	}
+	.glyphicon-plus {
+		position: relative;
+		float: left;
+		top:20px;
+		left: 20px;
+		font-size: 22px;
+	}
+	.custom-input-container input {
+		position: relative;
+		float: left;
+	}
+	.custom-input-container label {
+		position: relative;
+		float: left;
+	}
+	#new-question {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		color: #337AB7;
 	}
 	/* formdialog */
 	.formdialog {
