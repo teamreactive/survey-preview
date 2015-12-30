@@ -10,7 +10,7 @@
 			<div id="form-type-container">
 				<input type='radio' name='type' value='shortans'><label >Respuesta Corta</label><br>
 				<input type='radio' name='type' value='longans'><label>Respuesta Larga</label><br>
-				<input type='radio' name='type' value='sinlgeans'><label>Multiple opcion</label><br>
+				<input type='radio' name='type' value='singleans'><label>Multiple opcion</label><br>
 				<input type='radio' name='type' value='multans'><label>unica opcion</label><br>
 			</div>
 			<div class="dialogbuttons">
@@ -94,6 +94,7 @@
 				formHTML = formHTML.replace('{{ title }}', q['title']);
 
 			}
+			formHTML += "<br><br><br>";
 			formHTML += '<i id="new-question" class="fa fa-5x fa-plus-circle"></i>';
 
 			$('#my-form-body').html(formHTML);
@@ -101,6 +102,7 @@
 
 		createForm();
 
+		var nameid = 1;
 		// functionallity
 		var formdialog = $('#formdialog');
 		var formdialognew = $("#formdialog-new-question");
@@ -235,12 +237,27 @@
 			titleformdialog.html('Añadir opcion');
 			showDialog();
 		});
-		$('#new-question').on('click', function(e){
+		$('body').on('click','#new-question', function(e){
 			titleformdialog.html("Nueva pregunta");
 			formdialogplaceholder = "titulo"
 			showDialogNew();
 		});
 		$('#saveformdialognewbutton').on('click', function(){
+			var input = $('#nameformdialognew').val();
+			var type = $('input[name="type"]:checked').attr("value");
+			var nform = {
+					'title': input,
+					'type': type
+				};
+			if (type == 'singleans' || type == 'multans') { 
+				nform['type'] = 'multchoice';
+				nform['subtype'] = type;
+				nform['name'] = String(nameid);
+				nform['choices'] = [];
+				nameid+=1;
+			}
+			form['questions'].push(nform);
+			createForm();
 			hideDialogNew();
 		});
 		$('#cancelformdialognewbutton').on('click', function(){
