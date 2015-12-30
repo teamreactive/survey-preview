@@ -199,6 +199,7 @@
 			var index = $(e.target).parent().attr('id').split('-')[1];
 			if (index >= 0 && index < forms.length) {
 				main.load('form.html', function () {
+					document.title = forms[index]['title'];
 					$('#formtitle').html(forms[index]['title']);
 				});
 			}

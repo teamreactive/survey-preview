@@ -1,0 +1,49 @@
+<!-- preview.html -->
+<script>
+	$(document).ready(function () {
+		formHTML = '';
+		for (var i = 0; i < form['questions'].length; i++) {
+			var q = form['questions'][i];
+			console.log(q);
+			formHTML += '' +
+				'<div class="question">' +
+					'<h3>{{ title }}</h3>' +
+			'';
+			if (q['type'] === 'shortans') {
+				formHTML += '' +
+					'<input type="text" placeholder="Ingrese su respuesta">' +
+				'';
+			} else if (q['type'] === 'longans') {
+				formHTML += '' +
+					'<textarea rows="8" placeholder="Ingrese su respuesta"></textarea>' +
+				'';
+			} else if (q['type'] === 'multchoice') {
+				for (var j = 0; j < q['choices'].length; j++) {
+					var c = q['choices'][j];
+					formHTML += '' +
+						'<input type="{{ qtype }}" name="{{ qname }}" value="{{ value }}">' +
+						'<label>{{ name }}</label>' +
+						'<br>' +
+					'';
+					/* Replace marks */
+					var qtype = '';
+					if (q['subtype'] === 'singleans') {
+						qtype = 'radio';
+					} else if (q['subtype'] === 'multans') {
+						qtype = 'checkbox';
+					}
+					formHTML = formHTML.replace('{{ qtype }}', qtype);
+					formHTML = formHTML.replace('{{ qname }}', q['name']);
+					formHTML = formHTML.replace('{{ value }}', c['value']);
+					formHTML = formHTML.replace('{{ name }}', c['name']);
+				}
+			}
+			formHTML += '' +
+				'</div>' +
+			'';
+			/* Replace marks */
+			formHTML = formHTML.replace('{{ title }}', q['title']);
+		}
+		formbody.html(formHTML);
+	});
+</script>

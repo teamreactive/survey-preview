@@ -6,7 +6,6 @@
 
 	#formbody {
 		margin: 42px auto;
-		height: 1200px;
 		border: 1px solid #DDD;
 	}
 
@@ -48,6 +47,32 @@
 	.selected {
 		background: #EEE;
 	}
+
+	.question {
+		padding: 15px 40px;
+	}
+
+	.question h3 {
+		margin-bottom: 18px;
+	}
+
+	.question input[type="text"],
+	.question textarea {
+		padding: 10px;
+		font-size: 1.1em;
+		width: 100%;
+		border: 1px solid #CCCCCC;
+	}
+
+	.question textarea {
+		resize: vertical;
+	}
+
+	.question label {
+		font-size: 1.1em;
+		margin-left: 8px;
+		font-weight: normal;
+	}
 </style>
 <!-- Left menu -->
 <div class="leftmenu col-md-2">
@@ -58,27 +83,83 @@
 		</a>
 	</div>
 	<ul>
-		<li class="lmchoice selected">Vista previa</li>
-		<li class="lmchoice">Editar</li>
-		<li class="lmchoice">Compartir</li>
-		<li class="lmchoice">Estadisticas</li>
+		<li id="lmchoice1" class="lmchoice selected">Vista previa</li>
+		<li id="lmchoice2" class="lmchoice">Editar</li>
+		<li id="lmchoice3" class="lmchoice">Compartir</li>
+		<li id="lmchoice4" class="lmchoice">Estadisticas</li>
 	</ul>
 </div>
 <div class="container">	
 	<h1 id="formtitle">{{ title }}</h1>
-	<div id="formbody">
-
-	</div>
+	<div id="formbody"></div>
 </div>
 <script>
 	$(document).ready(function () {
-		var choices = $('.lmchoice');		
+		form = {
+			'questions': [
+				{
+					'title': 'Como te llamas?',
+					'type': 'shortans'
+				},
+				{
+					'title': 'Que edad tienes?',
+					'type': 'longans'
+				},
+				{
+					'title': 'Te gustan los bebes?',
+					'name': 'dylbabies',
+					'type': 'multchoice',
+					'subtype': 'singleans',
+					'choices': [
+						{
+							'name': 'Si',
+							'value': 0
+						},
+						{
+							'name': 'No',
+							'value': 1
+						}
+					]
+				},
+				{
+					'title': 'Como te gustan los bebes?',
+					'name': 'hbabies',
+					'type': 'multchoice',
+					'subtype': 'multans',
+					'choices': [
+						{
+							'name': 'Vestidos de pirata',
+							'value': 0
+						},
+						{
+							'name': 'En mi sopa',
+							'value': 1
+						},
+						{
+							'name': 'Apanados',
+							'value': 2
+						},
+						{
+							'name': 'Bajo en grasas',
+							'value': 3
+						}
+					]
+				}
+			]
+		};
+
+		var choices = $('.lmchoice');
+
+		formbody = $('#formbody');
+		formbody.load('preview.html');
 
 		$('#formbackbutton').on('click', dashboard);
 		choices.on('click', selectChoice);
 
 		function dashboard(e) {
-			main.load('dashboard.html');
+			main.load('dashboard.html', function () {
+				document.title = 'Dashboard';
+			});
 		}
 
 		function selectChoice(e) {
@@ -88,6 +169,20 @@
 					choices.removeClass('selected');
 				}
 				target.addClass('selected');
+				switch (target.attr('id')) {
+					case 'lmchoice1':
+						formbody.load('preview.html');
+						break;
+					case 'lmchoice2':
+						formbody.load('edit.html');
+						break;
+					case 'lmchoice3':
+						formbody.load('share.html');
+						break;
+					case 'lmchoice4':
+						formbody.load('stats.html');
+						break;
+				}
 			}
 		}
 	});

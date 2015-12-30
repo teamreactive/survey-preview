@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Vista previa</title>
+		<title>Dashboard</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -80,12 +80,11 @@
 		<script>
 			$(document).ready(function () {
 				/* Load forms as JSON */
-				forms = [], N = 11;
-				for (var i = 0; i < N; i++) {
-					forms.push({
-						'title': 'Encuesta #%d'.replace('%d', i+1)
-					});
-				}
+				forms = [
+					{
+						'title': 'Encuesta de prueba'
+					}
+				];
 				/* Load dashboard html */
 				main = $('#main');
 				main.load('dashboard.html');
