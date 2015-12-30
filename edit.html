@@ -171,6 +171,10 @@
 			} else if (formdialogOption == "changeh") {
 				var qid = formdialogparent.attr("id").split("-")[1];
 				form["questions"][qid]['title'] = name;
+			} else if (formdialogOption == "changel") {
+				var qid = formdialogparent.attr("id").split("-")[1];
+				var aid = formdialogparent.attr("id").split("-")[2];
+				form["questions"][qid]['choices'][aid]['name'] = name;
 			}
 			hideDialog();
 
@@ -187,8 +191,10 @@
 		});
 		$('body').on('click','.label-editable',function(e){
 			formdialogtarget = $(e.target);
+			formdialogparent = formdialogtarget.parent();
 			formdialogplaceholder = "Escriba su Opcion";
 			titleformdialog.html('Cambiar opcion');
+			formdialogOption = "changel";
 			showDialog();
 		});
 		$('body').on('click','.remove-question',function(e){
