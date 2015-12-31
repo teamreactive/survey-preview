@@ -64,6 +64,7 @@
 			colors = shuffle(colors);
 			var choices = question['choices'];
 			var size = choices.length;
+			if (size > 4) size = 4;
 			var div = $('#sample-bar');
 			var help = $('#help-labels');
 			div.html('');
