@@ -195,7 +195,11 @@
 					}
 					for (var i = tomoveindexs.length - 1; i >= 0; i--) {
 						var child = $(a.children[tomoveindexs[i]]);
-						child.offset({top:child.offset().top - a.height});
+						var top = child.css("top").replace("px",""); if (top == 'auto') top = 0;
+						child.animate({ 
+								top: Number(top) - a.height,
+							},200, function(){
+							});
 					};
 					a.children[a.to_index] = a.children.splice(a.to_index+ntomove,1,a.children[a.to_index])[0];
 					a.initialy += tomoveindexs.length*a.height;
@@ -209,8 +213,11 @@
 					}
 					for (var i = tomoveindexs.length - 1; i >= 0; i--) {
 						var child = $(a.children[tomoveindexs[i]]);
-						console.log(tomoveindexs);
-						child.offset({top:child.offset().top + a.height});
+						var top = child.css("top").replace("px",""); if (top == 'auto') top = 0;
+						child.animate({ 
+								top: Number(top) + a.height,
+							},200, function(){
+							});
 					};
 					a.children[a.to_index] = a.children.splice(a.to_index-ntomove,1,a.children[a.to_index])[0];
 					a.initialy -= tomoveindexs.length*a.height;
