@@ -40,6 +40,8 @@
 			to_index:0,
 			question:null,
 			bar_children:null,
+			top_limit:0,
+			bottom_limit:0,
 		};
 		function shuffle(array) {
 		  var currentIndex = array.length, temporaryValue, randomIndex;
@@ -110,7 +112,7 @@
 				help.append(li);
 
 			}
-			div.css('height',max(barGraphics.sizes))
+			div.css('height',Math.max.apply(null,barGraphics.sizes))
 			   .append("<div class='clearfix'></div>");
 			$('#bar-container').append(div);
 			div.width(size*bar.width());
@@ -147,7 +149,8 @@
 				help.append(li);
 
 			}
-			div.append("<div class='clearfix'></div>");
+			div.append("<div class='clearfix'></div>")
+			   .css('height',Math.max.apply(null,barGraphics.sizes));
 			$('#bar-container').append(div);
 			div.width(size*bar.width());
 			list_dynamic_position.bar_children = div.children();
@@ -176,6 +179,8 @@
 			list_dynamic_position.delta = e.pageY - target.offset().top;
 			list_dynamic_position.initialy = e.pageY;
 			list_dynamic_position.clicked = true;
+			list_dynamic_position.top_limit = children.eq(0).offset().top;
+			list_dynamic_position.bottom_limit = children.eq(children.length - 1).offset().top;
 
 
 			var offset = target.offset();
@@ -187,12 +192,15 @@
 
 
 		$('body').on('mousemove', function(e) {
-			if (list_dynamic_position.clicked == true) {
+			if (list_dynamic_position.clicked == true ) {
 				var a = list_dynamic_position;
 				var target = $('.list-dynamic-position-on');
-				target.offset({top:(e.pageY-a.delta)});
+				var frec = false;
+				if ( e.pageY - a.delta < a.top_limit-10) target.offset({top:a.top_limit-10});
+				else if ( e.pageY - a.delta > a.bottom_limit + 10 ) target.offset({top:a.bottom_limit +10});
+				else {target.offset({top:(e.pageY-a.delta)}); frec = true;}
 				var delta = e.pageY - a.initialy;
-				if (delta > a.height ) {
+				if (delta > a.height && frec) {
 					var tomoveindexs = [];
 					var ntomove = Math.floor(delta/a.height);
 					for (var i = a.to_index + 1 ; i < a.to_index + 1 + ntomove; i++) { 
@@ -229,7 +237,7 @@
 					a.bar_children[a.to_index] = a.bar_children.splice(a.to_index+ntomove,1,a.bar_children[a.to_index])[0];
 					a.initialy += tomoveindexs.length*a.height;
 					a.to_index += tomoveindexs.length;
-				} else if (delta < 0-a.height) {
+				} else if (delta < 0-a.height && frec) {
 					var tomoveindexs = []
 					var ntomove = Math.floor((-delta)/a.height);
 					console.log(ntomove);
