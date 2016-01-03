@@ -110,8 +110,8 @@
 				help.append(li);
 
 			}
-
-			div.append("<div class='clearfix'></div>");
+			div.css('height',max(barGraphics.sizes))
+			   .append("<div class='clearfix'></div>");
 			$('#bar-container').append(div);
 			div.width(size*bar.width());
 			list_dynamic_position.bar_children = div.children();
