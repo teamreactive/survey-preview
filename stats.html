@@ -39,6 +39,7 @@
 			index:0,
 			to_index:0,
 			question:null,
+			bar_children:null,
 		};
 		function shuffle(array) {
 		  var currentIndex = array.length, temporaryValue, randomIndex;
@@ -109,9 +110,11 @@
 				help.append(li);
 
 			}
+
 			div.append("<div class='clearfix'></div>");
 			$('#bar-container').append(div);
 			div.width(size*bar.width());
+			list_dynamic_position.bar_children = div.children();
 		}
 
 		function reloadBarGraphics() {
@@ -147,7 +150,7 @@
 			div.append("<div class='clearfix'></div>");
 			$('#bar-container').append(div);
 			div.width(size*bar.width());
-
+			list_dynamic_position.bar_children = div.children();
 		}
 
 		loadQuestionOptions();
@@ -174,12 +177,14 @@
 			list_dynamic_position.initialy = e.pageY;
 			list_dynamic_position.clicked = true;
 
+
 			var offset = target.offset();
 			target.offset({
 				top:offset.top - 10,
 				left: offset.left + 10
 			});
 		});
+
 
 		$('body').on('mousemove', function(e) {
 			if (list_dynamic_position.clicked == true) {
@@ -199,9 +204,29 @@
 						child.animate({ 
 								top: Number(top) - a.height,
 							},200, function(){
-							});
+						});
+
+						// animate bars
+						var bar_child = $(a.bar_children[tomoveindexs[i]]);
+						var left = Number(bar_child.css('width').replace('px',''));
+						var height = Number(bar_child.css('height').replace('px',''));
+						console.log('left '+left+' height'+height*0.9);
+						bar_child.animate({left: "-="+left/2,height:height*0.9,top: height*0.05,width:left*0.9},100)
+								 .animate({left: '-='+left/2,height:height    ,top: 0          ,width:left    },100);
 					};
+					//animate bar
+					var bar_child = $(a.bar_children[a.to_index]);
+					var left = Number(bar_child.css('width').replace('px',''));
+					var height = Number(bar_child.css('height').replace('px',''));
+
+					bar_child.css('z-index','10')
+							 .animate({left: '+='+left/2,height: height*1.1,top: '-='+height*0.05,width:left*1.1},100)
+							 .animate({left: '+='+left/2,height: height,  top: 0               ,width:left},100)
+							 .css('z-index','0');
+
+
 					a.children[a.to_index] = a.children.splice(a.to_index+ntomove,1,a.children[a.to_index])[0];
+					a.bar_children[a.to_index] = a.bar_children.splice(a.to_index+ntomove,1,a.bar_children[a.to_index])[0];
 					a.initialy += tomoveindexs.length*a.height;
 					a.to_index += tomoveindexs.length;
 				} else if (delta < 0-a.height) {
@@ -218,8 +243,27 @@
 								top: Number(top) + a.height,
 							},200, function(){
 							});
-					};
+
+						// animate bars
+						var bar_child = $(a.bar_children[tomoveindexs[i]]);
+						var left = Number(bar_child.css('width').replace('px',''));
+						var height = Number(bar_child.css('height').replace('px',''));
+						bar_child.animate({left: '+='+left/2,top: height*0.05,height: height*0.9,width:left*0.9},100)
+							     .animate({left: '+='+left/2,top: 0,          height: height    ,width:left    },100);
+
+					}
+					//animate bar
+					var bar_child = $(a.bar_children[a.to_index]);
+					var left = Number(bar_child.css('width').replace('px',''));
+					var height = Number(bar_child.css('height').replace('px',''));
+					bar_child.css('z-index','10')
+							 .animate({left: '-='+left/2,height: height*1.1,top: '-='+height*0.05,width:left*1.1},100)
+							 .animate({left: '-='+left/2,height: height    ,top: 0               ,width:left    },100)
+							 .css('z-index','0');
+
+
 					a.children[a.to_index] = a.children.splice(a.to_index-ntomove,1,a.children[a.to_index])[0];
+					a.bar_children[a.to_index] = a.bar_children.splice(a.to_index-ntomove,1,a.bar_children[a.to_index])[0];
 					a.initialy -= tomoveindexs.length*a.height;
 					a.to_index -= tomoveindexs.length;
 				} 
@@ -238,6 +282,7 @@
 				});
 				console.log(list_dynamic_position);
 				var choices = a.question['choices'];
+
 				choices[a.index] = choices.splice(a.to_index,1,choices[a.index])[0];
 				barGraphics.colors[a.index] = barGraphics.colors.splice(a.to_index,1,barGraphics.colors[a.index])[0];
 				barGraphics.sizes[a.index] = barGraphics.sizes.splice(a.to_index,1,barGraphics.sizes[a.index])[0];
