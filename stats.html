@@ -170,7 +170,8 @@
 
 		$('body').on('mousedown','.list-dynamic-position', function(e) {
 			var target = $(e.target);
-			target.addClass('list-dynamic-position-on');
+			target.addClass('list-dynamic-position-on')
+			      .css('background-color',target.css('background-color'));
 
 			list_dynamic_position.height = Number(target.css("height").replace("px","")) + Number(target.css("margin-top").replace("px",""));
 			var children = list_dynamic_position.children =  $('#help-labels').children();
