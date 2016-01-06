@@ -1,98 +1,399 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<!--
+	Material Design Lite
+	Copyright 2015 Google Inc. All rights reserved.
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		https://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License
+-->
+<html lang="es">
 	<head>
-		<title>Dashboard</title>
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Dashboard</title>
+		<link href="//fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
+		<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="material.min.css">
+		<link rel="stylesheet" href="styles.css">
 		<style>
-			nav {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 68px;
-				border-radius: 0;
-				background: #FFF;
-				z-index: 1000;
-				box-shadow: 0px 1px 5px #333;
+			#addfrmglb {
+			  position: fixed;
+			  display: block;
+			  right: 0;
+			  bottom: 0;
+			  margin-right: 40px;
+			  margin-bottom: 40px;
+			  z-index: 900;
 			}
 
-			nav .titlemenu h1 {
-				margin-left: 10px;
-				font-size: 1.75em;
+			#dialog {
+			  z-index: 100;
+			  background-color: rgba(0, 0, 0, 0.8);
+			}
+			#dialog .demo-cards {
+			  position: absolute;
+			  top: 30vh;
+			}
+			#dialog input,
+			#dialog label {
+			  margin-left: 15px;
 			}
 
-			nav .titlemenu a:hover {
-				text-decoration: none;
-			}
-
-			nav .usermenu a {
-				position: absolute;
-				right: 0;
-				margin: 0;
-				padding: 23px 40px;
-				font-size: 1.15em;
-				text-decoration: none;
-			}
-
-
-			nav .usermenu a:active,
-			nav .usermenu a:hover {
-				background: #EEE;
-				text-decoration: none;
-			}
-
-			#main {
-				margin-top: 95px;
-			}
-
-			#maintitle a:visited,
-			#maintitle a:hover {
-				text-decoration: none;
+			.hidden {
+			  display: none;
 			}
 		</style>
 	</head>
 	<body>
-		<!-- navbar -->
-		<nav>
-			<div class="col-md-6">
-				<div class="titlemenu">
-					<h1 id="maintitle">
-						<a href="javascript:void(0)">Encuesta</a>
-					</h1>
+		<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+			
+			<!-- Navbar -->
+			<header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+				<div class="mdl-layout__header-row">
+					
+					<!-- Left-hand side -->
+					<span class="mdl-layout-title">Mis encuestas</span>
+					<div class="mdl-layout-spacer"></div>
+					
+					<!-- Right-hand side -->
+					<button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
+						<i class="material-icons">more_vert</i>
+					</button>
+					<ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
+						<li class="mdl-menu__item">Acerca de</li>
+						<li class="mdl-menu__item">Contacto</li>
+						<li class="mdl-menu__item">Informacion legal</li>
+					</ul>
+
 				</div>
+			</header>
+
+			<!-- Sidebar -->
+			<div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+				
+				<!-- User info & opts -->
+				<header class="demo-drawer-header">
+					<img src="images/user.jpg" class="demo-avatar">
+					<div class="demo-avatar-dropdown">
+						<span>hola@ejemplo.com</span>
+						<div class="mdl-layout-spacer"></div>
+						<button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+							<i class="material-icons" role="presentation">arrow_drop_down</i>
+							<span class="visuallyhidden">Opciones usuario</span>
+						</button>
+						<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+							<li class="mdl-menu__item">Cerrar sesion</li>
+						</ul>
+					</div>
+				</header>
+
+				<!-- Form options -->
+				<nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+					<a class="mdl-navigation__link is-active" href="/index.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Inicio</a>
+					<a class="mdl-navigation__link" id="addfrmlat" href="javascript:void(0)"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">add</i>Crear encuesta</a>
+					<div class="mdl-layout-spacer"></div>
+					<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Ayuda</span></a>
+				</nav>
+
 			</div>
-			<div class="col-md-6">
-				<div class="usermenu">
-					<a href="javascript:void(0)">
-						<i class="fa fa-user"></i>
-						Administrador
-					</a>
-				</div>
-			</div>
-		</nav>
-		<!-- main -->
-		<div id="main"></div>
-		<!-- js scritps -->
+
+			<!-- Main container -->
+			<main class="mdl-layout__content mdl-color--grey-100">
+        <div id="forms" class="mdl-grid demo-content"></div>
+      </main>
+		</div>
+
+		<!-- Create form button -->
+		<a href="javscript:void(0)" id="addfrmglb" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+			<i class="material-icons">add</i>
+		</a>
+
+		<!-- Create/Edit form dialog -->
+		<div id="dialog" class="demo-layout mdl-layout mdl-js-layout hidden">
+			<div class="demo-cards mdl-cell mdl-cell--12-col mdl-grid mdl-grid--no-spacing">
+	      <div class="mdl-cell mdl-cell--4-col"></div>
+	      <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col">
+	        <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
+	          <h2 id="dlghdr" class="mdl-card__title-text">{{ title }}</h2>
+	        </div>
+	        <form action="#">
+					  <div class="mdl-textfield mdl-js-textfield">
+					    <input class="mdl-textfield__input" type="text" id="dlgipt">
+					    <label class="mdl-textfield__label" for="dlgipt">Ingrese el nombre...</label>
+					  </div>
+					</form>
+	        <div class="mdl-card__actions">
+	          <a id="dlgcnl" href="javascript:void(0)" class="mdl-button mdl-js-button mdl-js-ripple-effect">Cancelar</a>
+	          <a id="dlgsve" href="javascript:void(0)" class="mdl-button mdl-js-button mdl-js-ripple-effect">Confirmar</a>
+	        </div>
+	      </div>
+	    </div>
+	 		
+
+		</div>
+
+		
+		<!-- Required libs -->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="material.min.js"></script>
+
+		<!-- Custom script -->
 		<script>
+			/*
+			When DOM finishes loading, the following tasks must
+			be performed:
+				1. Retrieve and render forms as HTML objects.
+				2. Add open dialog func to dashboard add buttons.
+				3. Initialize create/edit dialog buts + func.
+			*/
 			$(document).ready(function () {
-				/* Load forms as JSON */
-				forms = [
-					{
-						'title': 'Encuesta de prueba'
-					}
-				];
-				/* Load dashboard html */
-				main = $('#main');
-				main.load('dashboard.html');
-				/* Set funcions */
-				$('#maintitle').on('click', function (e) {
-					main.load('dashboard.html');
-				})
+				rtrforms(rdrforms);	// Step 1.
+				cfgbuts();					// Step 2.
+				inidialog();				// Step 3.
 			});
+
+			/*
+			Form data will be maintained as a global in order
+			to perform different operations and renderization
+			over it, data consist of an array-object filled
+			with a JS-dictionary for each retrieved form:
+				[ { 'title': String }, ... ]
+			*/
+			var forms = [];
+
+			/*
+			Maintain the global selected-form index in order
+			to know if the correct operation to perform is
+			edit over an existing form or create a new one.
+			Set up initially to -1 because no form is selected.
+				0 <= modI < forms.length -> Edit form
+				modI = -1 							 -> Create form
+			*/
+			var modI = -1;			
+
+			/*
+			Retrieve forms data directly from the server, after
+			network operation finished, the provided callback,
+			if there is one, will be called with no arguments.
+				Params:
+					* cb: function() Callback function called after
+								form data is loaded and saved.
+				Return: None
+			*/
+			function rtrforms(cb) {
+				/* Retrieve and save form data. */
+				forms = [ { 'title': 'Encuesta #1' } ];
+				/* Call callback if there is any. */
+				if (cb) cb();
+			}
+
+			/*
+			Render form data as HTML inside a given form container
+			following a pre-defined template for each one, after
+			the HTML creation has been finished, functionality
+			will be added to every button and menu in the form.
+				Params: None
+				Return: None
+			*/
+			function rdrforms() {
+				var formsHTML = '';
+				for (var i = forms.length-1; i >= 0; i--) {
+					/* Add basic element template. */
+					formsHTML += '' +
+						'<div id="form-{{ idform }}" class="demo-cards mdl-cell mdl-cell--6-col mdl-grid mdl-grid--no-spacing">' +
+	            '<div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">' +
+	              '<div class="mdl-card__title mdl-card--expand mdl-color--teal-300">' +
+	                '<h2 class="mdl-card__title-text">{{ title }}</h2>' +
+	              '</div>' +
+	              '<div class="mdl-card__actions mdl-card--border demo-avatar-dropdown">' +
+	                '<a id="shwmore-{{ idshwmore }}" href="javascript:void(0)" class="mdl-button mdl-js-button mdl-js-ripple-effect shwmore">Ver mas</a>' +
+									'<div class="mdl-layout-spacer"></div>' +
+									'<button id="formbtn-{{ idbtn }}" class="mdl-button mdl-js-button mdl-button--icon">' +
+									  '<i class="material-icons">more_vert</i>' +
+									'</button>' +
+									'<ul class="mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect" for="formbtn-{{ idul }}">' +
+									  '<li id="chgname-{{ idchgname }}" class="mdl-menu__item chgname">Cambiar nombre</li>' +
+									  '<li id="delform-{{ iddelform }}" class="mdl-menu__item delform">Eliminar</li>' +
+									'</ul>' +
+	              '</div>' +
+	            '</div>' +
+	          '</div>' +
+	        '';
+	        /* Replace variables with form values. */
+	        formsHTML = formsHTML.replace('{{ idform }}', i);
+					formsHTML = formsHTML.replace('{{ title }}', forms[i]['title']);
+					formsHTML = formsHTML.replace('{{ idbtn }}', i);
+					formsHTML = formsHTML.replace('{{ idul }}', i);
+
+					formsHTML = formsHTML.replace('{{ idshwmore }}', i);
+					formsHTML = formsHTML.replace('{{ idchgname }}', i);
+					formsHTML = formsHTML.replace('{{ iddelform }}', i);
+				}
+				/* Send HTML String inside form container. */
+				$('#forms').html(formsHTML);
+				/* Expand all new MDL elements. */
+  			componentHandler.upgradeDom();
+				/* Add functionality to buttons. */
+				$('.shwmore').on('click', shwmore);
+				$('.chgname').on('click', chgname);
+				$('.delform').on('click', delform);
+			}
+
+			/*
+			Open the selected form replacing the current interface,
+			this will render a new view sending specific-form data
+			and enabling specific-form operations.
+				Params:
+					* e: Object Holds information abount the released
+							 click event.
+				Return: None
+			*/
+			function shwmore(e) {
+				var i = $(e.currentTarget).attr('id').split('-')[1];
+				if (i >= 0 && i < forms.length) {
+					window.location = '/form.html';
+				}
+			}
+
+			/*
+			Make the edit dialog visible with the selected form data,
+			and letting the user to modify the selected form current
+			name to a new value, or to cancel the operation.
+				Params:
+					* e: Object Holds information abount the released
+							 click event.
+				Return: None
+			*/
+			function chgname(e) {
+				var i = $(e.currentTarget).attr('id').split('-')[1];
+				if (i >= 0 && i <= forms.length) {
+					edtdialog('Cambiar nombre', forms[i].title, i);
+				}
+			}
+
+			/*
+			Remove the selected form from the data list if possible,
+			after new data is obtainer, render again forms as HTML
+			objects using the render function.
+				Params:
+					* e: Object Holds information abount the released
+							 click event.
+				Return: None
+			*/
+			function delform(e) {
+				var i = $(e.currentTarget).attr('id').split('-')[1];
+				if (i >= 0 && i < forms.length) {
+					forms.splice(i, 1);
+					rdrforms();
+				}
+			}
+
+			/*
+			Initialize add form buttons so they open the new dialog
+			popup when pressed.
+				Params: None
+				Return: None
+			*/
+			function cfgbuts() {
+				$('#addfrmlat').on('click', function () { edtdialog('Crear encuesta', '') });
+				$('#addfrmglb').on('click', function () { edtdialog('Crear encuesta', '') });
+			}
+
+			/*
+			Initialize dialog popup by checking it's hidden, and
+			adding the correct functionality to each button.
+				Params: None
+				Return: None
+			*/
+			function inidialog() {
+				var dialog = $('#dialog');
+				var name = dialog.find('#dlgipt');
+				/* Hide dialog if necessary. */
+				if (!dialog.hasClass('hidden')) {
+					dialog.addClass('hidden');
+				}
+				/* Add button functionality */
+				dialog.find('#dlgsve').on('click', function () { sveform(name.val()) });
+				dialog.find('#dlgcnl').on('click', function () { edtdialog()         });
+			}
+
+			/*
+			Open or close the create/edit dialog based on the current
+			status, and using the given args to show title and input
+			data correctly.
+				Params:
+					* hdr: String Dialog title.
+					* ipt: String Input value.
+					* mod: Integer Form index.
+				Return: None
+			*/
+			function edtdialog(hdr, ipt, i) {
+				var dialog = $('#dialog');
+				var dirty = $('#dialog').find('#dlgipt').parent();
+				if (dialog.hasClass('hidden')) {
+					/* Set given title. */
+					dialog.find('#dlghdr').html(hdr);
+					/* Set input data. */
+					$('#dialog').find('#dlgipt').val(ipt);
+					if (ipt.length > 0 && !dirty.hasClass('is-dirty')) {
+						dirty.addClass('is-dirty');
+					}
+					/* Make dialog visible. */
+					dialog.removeClass('hidden');
+					/* Set the global selected-index */
+					modI = (i !== null) ? i : -1;
+				} else {
+					/* Clear title. */
+					dialog.find('#dlghdr').html('');
+					/* Creal input data. */
+					$('#dialog').find('#dlgipt').val('');
+					if (dirty.hasClass('is-dirty')) {
+						dirty.removeClass('is-dirty');
+					}
+					/* Make dialog invisible */
+					dialog.addClass('hidden');
+					/* Reset the global selected-index */
+					modI = -1;
+				}
+			}
+			
+			/*
+			Save the form by performing the correct operation
+			based on the status of the global selected-form index
+			following this schema:
+				* 0 <= modI <= forms.lengt -> Edit form
+				* modI = -1 							 -> Create form
+			Finally, reload form HTML objects and close dialog.
+				Params:
+					* name: String Name value for the new/modified
+									form.
+				Return: None
+			*/
+			function sveform(name) {
+				console.log('save ' + name);
+				if (modI >= 0 && modI < forms.length) {
+					/* Edit existing form. */
+					forms[modI]['title'] = name;
+				} else {
+					/* Create new form. */
+					forms.push({ 'title': name });
+				}
+				/* Refresh form HTML */
+				rdrforms();
+				/* Hide dialog. */
+				edtdialog();
+			}
 		</script>
 	</body>
 </html>

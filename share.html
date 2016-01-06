@@ -1,22 +1,79 @@
 <!-- share.html -->
-<div class="question" id="shareurl">
-	<h3>Enlace URL</h3>
-	<input type="text" value="{{ url }}" disabled>
+<!-- Share URL -->
+<div class="mdl-cell mdl-cell--1-col mdl-grid"></div>
+<div class="demo-options mdl-card mdl-shadow--2dp mdl-cell mdl-cell--10-col">
+	<div class="qst demo-options mdl-card mdl-cell mdl-cell--12-col">
+		<div class="mdl-card__supporting-text mdl-color-text--grey-600">
+			<h3>Enlace URL</h3>
+			<div class="qipt">
+				<div class="mdl-textfield mdl-js-textfield is-upgraded" data-upgraded=",MaterialTextfield">
+					<input class="mdl-textfield__input" type="text" id="shrurl" disabled>
+					<label class="mdl-textfield__label" for="shrurl"></label>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+<div class="mdl-cell mdl-cell--1-col mdl-grid"></div>
 
-<div class="question" id="shareembed">
-	<h3>Insertar en pagina web</h3>
-	<textarea rows="5" disabled>{{ embed }}</textarea>
+<!-- Embed code -->
+<div class="mdl-cell mdl-cell--1-col mdl-grid"></div>
+<div class="demo-options mdl-card mdl-shadow--2dp mdl-cell mdl-cell--10-col">
+	<div class="qst demo-options mdl-card mdl-cell mdl-cell--12-col">
+		<div class="mdl-card__supporting-text mdl-color-text--grey-600">
+			<h3>Insertar en pagina web</h3>
+			<div class="qipt">
+				<div class="mdl-textfield mdl-js-textfield is-upgraded" data-upgraded=",MaterialTextfield">
+					<textarea rows="5" class="mdl-textfield__input" id="shremb" disabled></textarea>
+					<label class="mdl-textfield__label" for="shremb"></label>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+<div class="mdl-cell mdl-cell--1-col mdl-grid"></div>
 
 <script>
+	/*
+	The generated url will maintained as a global in
+	order to render the URL text and the embbedable
+	code correctly.
+		String r'http(s)?://(www\.)?[A-Za-z0-9]+(.[A-Za-z]+)+'
+	*/
+	var urlform = 'https://www.google.com';
+
+	/*
+	When DOM finishes loading, the following tasks must
+	be performed:
+		1. Render the generated URL.
+		2. Render the generated embbedable code.
+		3. Expand all new MDL elements.
+	*/
 	$(document).ready(function () {
-		var formURL = 'https://www.google.com';
-		/* Load URL for the form */
-		$('#shareurl input').attr('value', formURL);
-		/* Load Embed code for the form */
-		var code = '<iframe src="{{ url }}"></iframe>'
-					.replace('{{ url }}', formURL);
-		$('#shareembed textarea').html(code);
+		rdrurl();												// Step 1
+		rdremb();												// Step 2
+		componentHandler.upgradeDom();	// Step 3
 	});
+
+	/*
+	Render a generated URL inside the input text field.
+	Params: None
+	Return: None
+	*/
+	function rdrurl() {
+		/* Load URL for the form */
+		$('#shrurl').val(urlform);
+	}
+
+	/*
+	Render a generated URL inside the textarea field.
+	Params: None
+	Return: None
+	*/
+	function rdremb() {
+		/* Load Embed code for the form */
+		var emb = '<iframe src="{{ url }}"></iframe>';
+		emb = emb.replace('{{ url }}', urlform);
+		$('#shremb').html(emb);
+	}
 </script>

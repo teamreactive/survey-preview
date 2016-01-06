@@ -1,377 +1,267 @@
-<!-- form.html -->
-<style>
-	.container {
-		width: 65%;
-	}
+<!doctype html>
+<!--
+	Material Design Lite
+	Copyright 2015 Google Inc. All rights reserved.
 
-	#formbody {
-		position: relative;
-		margin: 42px auto;
-		border: 1px solid #DDD;
-	}
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
 
-	.leftmenu {
-		z-index: 100;
-		margin-top: 10px;
-		left: 10px;
-		position: fixed;
-	}
+		https://www.apache.org/licenses/LICENSE-2.0
 
-	.leftmenu ul {
-		background: #FFF;
-		width: 100%;
-		border: 1px solid #DDD;
-		margin-top: 90px;
-		padding: 0;
-	}
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License
+-->
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Encuesta #1</title>
+		<link href="//fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
+		<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="material.min.css">
+		<link rel="stylesheet" href="styles.css">
+		<style>
+			.selected {
+				background-color: #00BCD4;
+				color: #32505B !important;
+			}
+			.qst {
+				padding: 10px;
+			}
+			.qtit {
+				margin-left: 20px;
+			}
+			.qipt {
+				padding-top: 20px;
+			}
+			.qipt div {
+				margin-left: 40px;
+				width: 100%;
+			}
+			hr {
+				width: 91%;
+				margin: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+			
+			<!-- Navbar -->
+			<header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+				<div class="mdl-layout__header-row">
+					
+					<!-- Left-hand side -->
+					<span class="mdl-layout-title">Encuesta #1</span>
+					<div class="mdl-layout-spacer"></div>
+					
+					<!-- Right-hand side -->
+					<button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
+						<i class="material-icons">more_vert</i>
+					</button>
+					<ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
+						<li class="mdl-menu__item">Acerca de</li>
+						<li class="mdl-menu__item">Contacto</li>
+						<li class="mdl-menu__item">Informacion legal</li>
+					</ul>
 
-	.leftmenu ul li {
-		width: 100%;
-		list-style: none;
-		padding: 20px;
-		cursor: pointer;
-	}
+				</div>
+			</header>
 
-	.leftmenu ul li:hover {
-		background: #EEE;
-	}
+			<!-- Sidebar -->
+			<div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+				
+				<!-- User info & opts -->
+				<header class="demo-drawer-header">
+					<img src="images/user.jpg" class="demo-avatar">
+					<div class="demo-avatar-dropdown">
+						<span>hola@ejemplo.com</span>
+						<div class="mdl-layout-spacer"></div>
+						<button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+							<i class="material-icons" role="presentation">arrow_drop_down</i>
+							<span class="visuallyhidden">Opciones usuario</span>
+						</button>
+						<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+							<li class="mdl-menu__item">Cerrar sesion</li>
+						</ul>
+					</div>
+				</header>
 
-	.leftmenu ul a {
-		width: 100%;
-	}
+				<!-- Form options -->
+				<nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+					<a class="mdl-navigation__link is-active" href="/index.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Inicio</a>
+					<a class="mdl-navigation__link navbut selected" id="menprev" href="javascript:void(0)"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">remove_red_eye</i>Vista previa</a>
+					<a class="mdl-navigation__link navbut" id="menedit" href="javascript:void(0)"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">edit</i>Editar</a>
+					<a class="mdl-navigation__link navbut" id="menshar" href="javascript:void(0)"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">link</i>Compartir</a>
+					<a class="mdl-navigation__link navbut" id="menstat" href="javascript:void(0)"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">poll</i>Estadisticas</a>
+					<div class="mdl-layout-spacer"></div>
+					<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Ayuda</span></a>
+				</nav>
 
-	.leftmenu ul a:hover {
-		text-decoration: none;
-		background: #EEE;
-	}
+			</div>
 
-	.selected {
-		background: #EEE;
-	}
+			<!-- Main container -->
+			<main class="mdl-layout__content mdl-color--grey-100">
+        <div id="form" class="mdl-grid demo-content"></div>
+      </main>
 
-	.question {
-		padding: 15px 40px;
-	}
+		</div>
+		
+		<!-- Required libs -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="material.min.js"></script>
 
-	.question h3 {
-		margin-bottom: 18px;
-	}
+		<!-- Custom script -->
+		<script>
+			/*
+			Form data will be maintained as a global in order
+			to perform different operations and renderization
+			over it, data consist of an a JS-dictionary with
+			each respective attribute:
+				{ 'questions': [...] }
+			*/
+			var form = [];
 
-	.question input[type="text"],
-	.question textarea {
-		padding: 10px;
-		font-size: 1.1em;
-		width: 100%;
-		border: 1px solid #CCCCCC;
-	}
+			/*
+			When DOM finishes loading, the following tasks must
+			be performed:
+				1. Retrieve form data as a dictionary.
+				2. Initialize right menu options.
+				3. Load preview as the default view.
+			*/
+			$(document).ready(function () {
+				rtrform();	// Step 1.
+				inimenu();	// Step 2.
+				lodprev();	// Step 3.
+			});	
 
-	.question textarea {
-		resize: vertical;
-	}
-
-	.question label {
-		font-size: 1.1em;
-		margin-left: 8px;
-		font-weight: normal;
-	}
-	/* Edit Text Css*/
-	.equestion {
-		position: relative;
-		padding: 15px 40px;
-	}
-
-	.equestion h3 {
-		cursor: pointer;
-		margin-bottom: 18px;
-		position: relative;
-		float: left;
-	}
-
-	.equestion input[type="text"],
-	.equestion textarea {
-		padding: 10px;
-		font-size: 1.1em;
-		width: 100%;
-		border: 1px solid #CCCCCC;
-	}
-
-	.equestion textarea {
-		resize: vertical;
-	}
-
-	.equestion label, #formdialog-new-question label {
-		font-size: 1.1em;
-		margin-left: 8px;
-		font-weight: normal;
-		position: relative;
-	}
-	.remove-question {
-		position: absolute;
-		top: 20px;
-		right: 20px;
-	}
-	.remove-input {
-		position: relative;
-		float: left;
-		top: 4px;
-		right: -3px;
-		font-size: 10px;
-	}
-	.glyphicon-plus {
-		position: relative;
-		float: left;
-		top:20px;
-		left: 20px;
-		font-size: 22px;
-	}
-	.custom-input-container input {
-		position: relative;
-		float: left;
-	}
-	.custom-input-container label {
-		position: relative;
-		float: left;
-	}
-	#new-question {
-		position: absolute;
-		bottom: 10px;
-		right: 10px;
-		color: #337AB7;
-	}
-	/* formdialog */
-	.formdialog {
-		z-index: 2000;
-		position: fixed;
-		background: #FFF;
-		top: 25%;
-		box-shadow: 0px 1px 5px #333;
-	}
-
-	.formdialog input {
-		padding: 10px;
-		width: 100%;
-		font-size: 1.1em;
-		margin: 4.5% auto 1.3% auto;
-	}
-
-	.formdialog button {
-		float: right;
-		padding: 13px 37px;
-		margin-left: 10px;
-		margin-bottom: 15px;
-		background: #FFF;
-		border: 1px solid #CCC;
-	}
-
-	.formdialog button:hover {
-		background: #CCC;
-	}
-
-	.formdialog .innerdialog {
-		padding: 15px;
-	}
-	/* new question form dialog */
-	.formdialog-new-question {
-		z-index: 2000;
-		position: fixed;
-		background: #FFF;
-		top: 25%;
-		box-shadow: 0px 1px 5px #333;
-	}
-
-	.formdialog-new-question input[type='text'] {
-		padding: 10px;
-		width: 100%;
-		font-size: 1.1em;
-		margin: 4.5% auto 1.3% auto;
-	}
-
-	.formdialog-new-question button {
-		float: right;
-		padding: 13px 37px;
-		margin-left: 10px;
-		margin-bottom: 15px;
-		background: #FFF;
-		border: 1px solid #CCC;
-	}
-
-	.formdialog-new-question button:hover {
-		background: #CCC;
-	}
-
-	.formdialog-new-question .innerdialog {
-		padding: 15px;
-	}
-
-	.hidden {
-		display: none;
-	}
-
-	#noformsmessage {
-		text-align: center;
-		color: #CCC;
-		margin-top: 17%;
-	}
-
-	#msgformdialog {
-		margin-left: 5px;
-		margin-bottom: 2.5%;
-		color: red;
-		font-weight: bold;
-	}
-	/* stats */
-	#stats-container {
-		position: relative;
-		padding: 15px 40px;
-	}
-	#stats-container ul {
-		padding: 0;
-		width: 100%;
-	}
-	#stats-container li {
-		list-style: none;
-		width: 100%;
-		padding: 20px;
-
-	}
-	#stats-container li:hover {
-		list-style: none;
-		background: #EEE;
-	}
-
-	/* bar graph */
-	#bar-container {
-		width: 100%;
-		position: relative;
-		border-top: solid 1px #EEE;
-		overflow-x: scroll; 
-		overflow-y: hidden;
-	}
-	.bar {
-		position: relative;
-		float: left;
-		width: 60px;
-		left: 0;
-		top: 0;
-	}
-	.list-dynamic-position-on {
-		box-shadow: -10px 10px 5px #888888;
-		z-index: 10;
-	}
-	
-
-</style>
-<!-- Left menu -->
-<div class="leftmenu col-md-2">
-	<!-- Back button -->
-	<div class="formback col-md-1">
-		<a id="formbackbutton" href="javascript:void(0)">
-			<i class="fa fa-5x fa-arrow-circle-left"></i>
-		</a>
-	</div>
-	<ul>
-		<li id="lmchoice1" class="lmchoice selected">Vista previa</li>
-		<li id="lmchoice2" class="lmchoice">Editar</li>
-		<li id="lmchoice3" class="lmchoice">Compartir</li>
-		<li id="lmchoice4" class="lmchoice">Estadisticas</li>
-	</ul>
-</div>
-<div class="container">	
-	<h1 id="formtitle">{{ title }}</h1>
-	<div id="formbody"></div>
-</div>
-<script>
-	$(document).ready(function () {
-		// type = ["shortans","longans","multchoice"]
-		form = {
-			'questions': [
-				{
-					'title': 'Como te llamas?',
-					'type': 'shortans'
-				},
-				{
-					'title': 'Que edad tienes?',
-					'type': 'longans'
-				},
-				{
-					'title': 'Te gustan los bebes?',
-					'name': 'dylbabies',
-					'type': 'multchoice',
-					'subtype': 'singleans',
-					'choices': [
+			/*
+			Retrieve form data directly from the server, after
+			network operation finished, the provided callback,
+			if there is one, will be called with no arguments.
+				Params:
+					* cb: function() Callback function called after
+								form data is loaded and saved.
+				Return: None
+			*/
+			function rtrform(cb) {
+				/* Retrieve and save form data. */
+				form = {
+					'questions': [
 						{
-							'name': 'Si',
-							'value': 0
+							'title': 'Como te llamas?',
+							'type': 'shortans'
 						},
 						{
-							'name': 'No',
-							'value': 1
+							'title': 'Que edad tienes?',
+							'type': 'longans'
+						},
+						{
+							'title': 'Te gustan los bebes?',
+							'name': 'dylbabies',
+							'type': 'multchoice',
+							'subtype': 'multans',
+							'choices': [
+								{
+									'name': 'Si',
+									'value': 0
+								},
+								{
+									'name': 'No',
+									'value': 1
+								}
+							]
+						},
+						{
+							'title': 'Como te gustan los bebes?',
+							'name': 'hbabies',
+							'type': 'multchoice',
+							'subtype': 'multans',
+							'choices': [
+								{
+									'name': 'Vestidos de pirata',
+									'value': 0
+								},
+								{
+									'name': 'En mi sopa',
+									'value': 1
+								},
+								{
+									'name': 'Apanados',
+									'value': 2
+								},
+								{
+									'name': 'Bajo en grasas',
+									'value': 3
+								}
+							]
 						}
 					]
-				},
-				{
-					'title': 'Como te gustan los bebes?',
-					'name': 'hbabies',
-					'type': 'multchoice',
-					'subtype': 'multans',
-					'choices': [
-						{
-							'name': 'Vestidos de pirata',
-							'value': 0
-						},
-						{
-							'name': 'En mi sopa',
-							'value': 1
-						},
-						{
-							'name': 'Apanados',
-							'value': 2
-						},
-						{
-							'name': 'Bajo en grasas',
-							'value': 3
-						}
-					]
-				}
-			]
-		};
+				};
+				/* Call callback if there is any. */
+				if (cb) cb();
+			}
 
-		var choices = $('.lmchoice');
+			/*
+			Initialize the left-menu buttons so they render
+			the correct view when clicked.
+				Params: None
+				Return: None
+			*/
+			function inimenu() {
+				$('.navbut').on('click', lodview);
+			}
 
-		formbody = $('#formbody');
-		formbody.load('preview.html');
-
-		$('#formbackbutton').on('click', dashboard);
-		choices.on('click', selectChoice);
-
-		function dashboard(e) {
-			main.load('dashboard.html', function () {
-				document.title = 'Dashboard';
-			});
-		}
-
-		function selectChoice(e) {
-			var target = $(e.target);
-			if (!target.hasClass('selected')) {
-				if (choices.hasClass('selected')) {
-					choices.removeClass('selected');
-				}
-				target.addClass('selected');
-				switch (target.attr('id')) {
-					case 'lmchoice1':
-						formbody.load('preview.html');
-						break;
-					case 'lmchoice2':
-						formbody.load('edit.html');
-						break;
-					case 'lmchoice3':
-						formbody.load('share.html');
-						break;
-					case 'lmchoice4':
-						formbody.load('stats.html');
-						break;
+			/*
+			Function that loads the correct view based on
+			the clicked button, it will render an HTML file
+			with the respective content.
+				Params:
+					* e: Object Holds information abount the released
+							 click event.
+				Return: None
+			*/
+			function lodview(e) {
+				var target = $(e.currentTarget);
+				var choices = $('.navbut');
+				var main = $('#form');
+				if (!target.hasClass('selected')) {
+					if (choices.hasClass('selected')) {
+						choices.removeClass('selected');
+					}
+					target.addClass('selected');
+					switch (target.attr('id')) {
+						case 'menprev':
+							main.load('preview.html');
+							break;
+						case 'menedit':
+							main.load('edit.html');
+							break;
+						case 'menshar':
+							main.load('share.html');
+							break;
+						case 'menstat':
+							main.load('stats.html');
+							break;
+					}
 				}
 			}
-		}
-	});
-</script>
+
+			/*
+			Load the default view (preview) when document
+			has finished rendering DOM.
+				Params: None
+				Return: None
+			*/
+			function lodprev() {
+				$('#form').load('preview.html');
+			}
+		</script>
+	</body>
+</html>

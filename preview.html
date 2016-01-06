@@ -1,49 +1,100 @@
 <!-- preview.html -->
+<div class="mdl-cell mdl-cell--1-col mdl-grid"></div>
+<div id="frmprev" class="demo-options mdl-card mdl-shadow--2dp mdl-cell mdl-cell--10-col"></div>
+<div class="mdl-cell mdl-cell--1-col mdl-grid"></div>
 <script>
+	/*
+	When DOM finishes loading, the following tasks must
+	be performed:
+		1. Render form object as HTML.
+		2. Expand all new MDL elements.
+	*/
 	$(document).ready(function () {
-		formHTML = '';
+		rdrform();											// Step 1
+  	componentHandler.upgradeDom();	// Step 2
+	});
+
+	/*
+	Render form dictionary as a ser of HTML objects
+	depending on each question properties.
+		Params: None
+		Return None
+	*/
+	function rdrform() {
+		var formHTML = '';
+		/* Iterate over every question. */
 		for (var i = 0; i < form['questions'].length; i++) {
-			var q = form['questions'][i];
-			console.log(q);
+			/* Set common initial HTML. */
+			var question = form['questions'][i];
 			formHTML += '' +
-				'<div class="question">' +
-					'<h3>{{ title }}</h3>' +
+				'<div class="qst demo-options mdl-card mdl-cell mdl-cell--12-col">' +
+				  '<div class="mdl-card__supporting-text mdl-color-text--grey-600">' +
+				    '<h3>{{ tit }}</h3>' +
+				    '<div class="qipt">' +
 			'';
-			if (q['type'] === 'shortans') {
+			formHTML = formHTML.replace('{{ tit }}', question['title']);
+			/* If question is a short ans. */
+			if (question['type'] === 'shortans') {
+				/* Add common template for the question type. */
 				formHTML += '' +
-					'<input type="text" placeholder="Ingrese su respuesta">' +
+					'<div class="mdl-textfield mdl-js-textfield">' +
+						'<input class="mdl-textfield__input" type="text" id="qid-{{ idipt }}">' +
+						'<label class="mdl-textfield__label" for="qid-{{ idlab }}">Ingrese su respuesta...</label>' +
+					'</div>' +
 				'';
-			} else if (q['type'] === 'longans') {
+				formHTML = formHTML.replace('{{ idipt }}', i);
+				formHTML = formHTML.replace('{{ idlab }}', i);
+			}
+			/* If question is a long ans. */
+			else if (question['type'] === 'longans') {
+				/* Add common template for the question type. */
 				formHTML += '' +
-					'<textarea rows="8" placeholder="Ingrese su respuesta"></textarea>' +
+					'<div class="mdl-textfield mdl-js-textfield">' +
+						'<textarea rows="5" class="mdl-textfield__input" type="text" id="qid-{{ idipt }}"></textarea>' +
+						'<label class="mdl-textfield__label" for="qid-{{ idlab }}">Ingrese su respuesta...</label>' +
+					'</div>' +
 				'';
-			} else if (q['type'] === 'multchoice') {
-				for (var j = 0; j < q['choices'].length; j++) {
-					var c = q['choices'][j];
+				formHTML = formHTML.replace('{{ idipt }}', i);
+				formHTML = formHTML.replace('{{ idlab }}', i);
+			}
+			/* If question is multiple choice. */
+			else if (question['type'] === 'multchoice') {
+				formHTML += '' +
+					'<ul>' +
+				'';
+				/* Iterate over every choice. */
+				for (var j = 0; j < question['choices'].length; j++) {
+					var choice = question['choices'][j];
+					/* Add common template for the question type. */
 					formHTML += '' +
-						'<input type="{{ qtype }}" name="{{ qname }}" value="{{ value }}">' +
-						'<label>{{ name }}</label>' +
-						'<br>' +
+						'<li>' +
+							'<label for="qid-{{ idlab }}" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">' +
+              	'<input type="checkbox" id="qid-{{ idipt }}" name="{{ namipt }}" value="{{ valipt }}" class="mdl-checkbox__input">' +
+              	'<span class="mdl-checkbox__label">{{ namlab }}</span>' +
+              '</label>' +
+            '</li>' +
 					'';
 					/* Replace marks */
-					var qtype = '';
-					if (q['subtype'] === 'singleans') {
-						qtype = 'radio';
-					} else if (q['subtype'] === 'multans') {
-						qtype = 'checkbox';
-					}
-					formHTML = formHTML.replace('{{ qtype }}', qtype);
-					formHTML = formHTML.replace('{{ qname }}', q['name']);
-					formHTML = formHTML.replace('{{ value }}', c['value']);
-					formHTML = formHTML.replace('{{ name }}', c['name']);
+					formHTML = formHTML.replace('{{ idlab }}', i + '-' + j);
+					formHTML = formHTML.replace('{{ idipt }}', i + '-' + j);
+					formHTML = formHTML.replace('{{ namipt }}', question['name']);
+					formHTML = formHTML.replace('{{ valipt }}', choice['value']);
+					formHTML = formHTML.replace('{{ namlab }}', choice['name']);
 				}
+				formHTML += '' +
+					'</ul>' +
+				'';
 			}
+			/* Set common HTML ending. */
 			formHTML += '' +
+						'</div>' +
+					'</div>' +
 				'</div>' +
 			'';
-			/* Replace marks */
-			formHTML = formHTML.replace('{{ title }}', q['title']);
+			/* Add line separator if question is not the last one. */
+			if (i < form['questions'].length - 1) formHTML += '<hr>';
 		}
-		formbody.html(formHTML);
-	});
+		/* Render HTML. */
+		$('#form #frmprev').html(formHTML);
+	}
 </script>
