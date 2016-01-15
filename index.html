@@ -100,10 +100,10 @@
 
 				<!-- Form options -->
 				<nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-					<a class="mdl-navigation__link is-active" href="/index.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Inicio</a>
+					<a class="mdl-navigation__link is-active" href="index.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Inicio</a>
 					<a class="mdl-navigation__link" id="addfrmlat" href="javascript:void(0)"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">add</i>Crear encuesta</a>
 					<div class="mdl-layout-spacer"></div>
-					<a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Ayuda</span></a>
+					<a class="mdl-navigation__link" href="javascript:void(0)"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Ayuda</span></a>
 				</nav>
 
 			</div>
@@ -262,7 +262,7 @@
 			function shwmore(e) {
 				var i = $(e.currentTarget).attr('id').split('-')[1];
 				if (i >= 0 && i < forms.length) {
-					window.location = '/form.html';
+					window.location = 'form.html';
 				}
 			}
 
